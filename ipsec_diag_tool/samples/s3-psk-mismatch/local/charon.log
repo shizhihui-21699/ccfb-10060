@@ -1,0 +1,9 @@
+2026-11-08 14:40:05.000 9[IKE] initiating IKE_SA hq-branch[11] to 198.51.100.23
+2026-11-08 14:40:05.130 9[IKE] sending IKE_SA_INIT request 0 [ SA KE No N(NATD_S_IP) N(NATD_D_IP) V V ]
+2026-11-08 14:40:05.910 9[IKE] received IKE_SA_INIT response 0 [ SA KE No N(NATD_S_IP) N(NATD_D_IP) V V ]
+2026-11-08 14:40:05.980 9[IKE] sending IKE_AUTH request 1 [ IDi AUTH SA TSi TSr ]
+2026-11-08 14:40:06.900 9[IKE] received IKE_AUTH response 1 [ N(AUTHENTICATION_FAILED) ]
+2026-11-08 14:40:06.920 9[IKE] received AUTHENTICATION_FAILED notify error
+2026-11-08 14:40:10.200 9[IKE] sending retransmit 1 of IKE_AUTH request 1 [ IDi AUTH SA TSi TSr ]
+2026-11-08 14:40:13.900 9[IKE] sending retransmit 2 of IKE_AUTH request 1
+2026-11-08 14:40:21.200 9[IKE] giving up after 3 retransmits, IKE_SA hq-branch[11] destroyed

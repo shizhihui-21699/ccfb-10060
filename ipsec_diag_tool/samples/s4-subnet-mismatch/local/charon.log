@@ -1,0 +1,7 @@
+2026-11-08 15:18:42.000 13[IKE] initiating IKE_SA hq-branch[14] to 198.51.100.23
+2026-11-08 15:18:42.140 13[IKE] sending IKE_SA_INIT request 0 [ SA KE No V V ]
+2026-11-08 15:18:42.900 13[IKE] received IKE_SA_INIT response 0 [ SA KE No V V ]
+2026-11-08 15:18:42.970 13[IKE] sending IKE_AUTH request 1 [ IDi AUTH SA TSi(10.10.0.0/16) TSr(192.168.50.0/24) ]
+2026-11-08 15:18:43.800 13[IKE] received IKE_AUTH response 1 [ IDr AUTH N(TS_UNACCEPTABLE) ]
+2026-11-08 15:18:43.820 13[IKE] received TS_UNACCEPTABLE notify, no CHILD_SA built
+2026-11-08 15:18:43.840 13[IKE] failed to establish CHILD_SA, keeping IKE_SA hq-branch[14]

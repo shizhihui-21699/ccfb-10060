@@ -1,0 +1,6 @@
+2026-11-08 15:18:42.045 8[IKE] received IKE_SA_INIT request 0 from 203.0.113.10
+2026-11-08 15:18:42.860 8[IKE] sending IKE_SA_INIT response 0 [ SA KE No V V ]
+2026-11-08 15:18:43.000 8[IKE] received IKE_AUTH request 1 [ IDi AUTH SA TSi TSr ]
+2026-11-08 15:18:43.030 8[IKE] traffic selectors in request: TSi 10.10.0.0/16 TSr 192.168.50.0/24
+2026-11-08 15:18:43.060 8[CFG] local leftsubnet is 192.168.51.0/24, no matching traffic selector for 192.168.50.0/24
+2026-11-08 15:18:43.750 8[IKE] traffic selectors unacceptable, sending IKE_AUTH response 1 [ N(TS_UNACCEPTABLE) ]

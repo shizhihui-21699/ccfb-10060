@@ -1,0 +1,8 @@
+2026-11-08 09:55:11.000 10[IKE] initiating IKE_SA hq-branch[21] to 198.51.100.23
+2026-11-08 09:55:11.150 10[IKE] sending IKE_SA_INIT request 0 [ SA KE No V V ]
+2026-11-08 09:55:11.920 10[IKE] received IKE_SA_INIT response 0 [ SA KE No V V ]
+2026-11-08 09:55:11.990 10[IKE] sending IKE_AUTH request 1 [ IDi(fqdn:hq-vpn.example.com) AUTH SA TSi TSr ]
+2026-11-08 09:55:12.900 10[IKE] received IKE_AUTH response 1 [ IDr(fqdn:branch-01.example.com) AUTH N(AUTHENTICATION_FAILED) ]
+2026-11-08 09:55:12.930 10[IKE] IDir 'fqdn:branch-01.example.com' does not match constraint 'fqdn:branch-99.example.com'
+2026-11-08 09:55:12.950 10[IKE] constraint check failed, peer ID mismatch
+2026-11-08 09:55:12.970 10[IKE] sending INFORMATIONAL request 2 [ N(AUTHENTICATION_FAILED) ]

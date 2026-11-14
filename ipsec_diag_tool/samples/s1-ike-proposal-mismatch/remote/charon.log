@@ -1,0 +1,7 @@
+2026-11-08 10:23:14.040 7[IKE] received IKE_SA_INIT request 0 [ SA KE No V V N(NATD_S_IP) N(NATD_D_IP) ] from 203.0.113.10
+2026-11-08 10:23:14.055 7[CFG] looking for an IKE config found hq-branch, matching
+2026-11-08 10:23:14.070 7[IKE] received proposals: ESP:AES_CBC_128/HMAC_SHA2_256_128/PRF_HMAC_SHA2_256/MODP_2048
+2026-11-08 10:23:14.085 7[IKE] remote is enforcing aes256-sha256-modp2048, no acceptable proposal found
+2026-11-08 10:23:14.900 7[IKE] sending IKE_SA_INIT response 0 [ N(NO_PROPOSAL_CHOSEN) ]
+2026-11-08 10:23:18.160 7[IKE] received IKE_SA_INIT request 0 [ SA KE No V V ] from 203.0.113.10
+2026-11-08 10:23:19.020 7[IKE] sending IKE_SA_INIT response 0 [ N(NO_PROPOSAL_CHOSEN) ]

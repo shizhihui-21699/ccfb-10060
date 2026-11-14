@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>IPSec/strongSwan 协商诊断报告</title>
+<style>
+:root{--bg:#f5f7fa;--card:#fff;--ink:#1f2933;--muted:#6b7280;--line:#e5e7eb;
+--blue:#2563eb;--red:#dc2626;--amber:#d97706;--green:#059669;--code:#0f172a}
+*{box-sizing:border-box}
+body{margin:0;font:14px/1.65 -apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC",
+"Microsoft YaHei",sans-serif;background:var(--bg);color:var(--ink)}
+header{background:linear-gradient(135deg,#1e3a8a,#2563eb);color:#fff;padding:26px 32px}
+header h1{margin:0 0 6px;font-size:22px}
+header .meta{opacity:.85;font-size:13px}
+.wrap{max-width:1180px;margin:0 auto;padding:24px 28px 60px}
+nav{display:flex;gap:8px;flex-wrap:wrap;margin:18px 0 24px}
+nav a{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:7px 14px;
+text-decoration:none;color:var(--blue);font-size:13px}
+nav a:hover{border-color:var(--blue)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;
+padding:20px 24px;margin-bottom:20px;box-shadow:0 1px 2px rgba(15,23,42,.04)}
+.card h2{margin:0 0 14px;font-size:17px;border-left:4px solid var(--blue);padding-left:10px}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px}
+.kpi{background:#f8fafc;border:1px solid var(--line);border-radius:10px;padding:14px}
+.kpi .v{font-size:24px;font-weight:700}
+.kpi .l{color:var(--muted);font-size:12px}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th,td{border:1px solid var(--line);padding:9px 11px;text-align:left;vertical-align:top}
+th{background:#f1f5f9;font-weight:600}
+td.mono,.mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:12.5px}
+.badge{display:inline-block;padding:2px 9px;border-radius:999px;font-size:12px;font-weight:600;white-space:nowrap}
+.b-ok{background:#d1fae5;color:var(--green)}
+.b-mismatch{background:#fee2e2;color:var(--red)}
+.b-warn{background:#fef3c7;color:var(--amber)}
+.b-info{background:#dbeafe;color:var(--blue)}
+.b-error{background:#fee2e2;color:var(--red)}
+.finding{border:1px solid var(--line);border-radius:10px;padding:14px 16px;margin-bottom:12px;
+border-left-width:5px}
+.finding.error{border-left-color:var(--red);background:#fff7f7}
+.finding.warn{border-left-color:var(--amber);background:#fffdf5}
+.finding.info{border-left-color:var(--blue);background:#f7faff}
+.finding h3{margin:0 0 6px;font-size:15px}
+.finding .src{color:var(--muted);font-size:12px;margin-left:8px}
+.finding ul{margin:8px 0 0;padding-left:20px}
+.finding li{margin:3px 0}
+.fix{background:var(--code);color:#d7e3f4;border-radius:8px;padding:10px 12px;margin:6px 0;
+font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12.5px;white-space:pre-wrap;word-break:break-all}
+.flow{display:flex;flex-wrap:wrap;gap:6px;align:center;margin-bottom:16px}
+.fstep{border:1px solid var(--line);border-radius:8px;padding:8px 12px;background:#f8fafc;font-size:12.5px}
+.fstep.done{border-color:var(--green);background:#ecfdf5}
+.fstep.stuck{border-color:var(--red);background:#fef2f2;font-weight:700}
+.fstep .n{display:inline-block;width:18px;height:18px;border-radius:50%;background:#cbd5e1;
+color:#fff;text-align:center;line-height:18px;font-size:11px;margin-right:6px}
+.fstep.done .n{background:var(--green)}
+.fstep.stuck .n{background:var(--red)}
+.arrow{color:var(--muted)}
+.tl{border-left:2px solid var(--line);margin-left:8px;padding-left:0}
+.ev{position:relative;padding:8px 0 8px 22px;font-size:13px}
+.ev::before{content:"";position:absolute;left:-7px;top:14px;width:12px;height:12px;border-radius:50%;
+background:var(--card);border:2px solid var(--blue)}
+.ev.local::before{border-color:var(--blue)}
+.ev.remote::before{border-color:var(--amber)}
+.ev .t{font-family:ui-monospace,Menlo,monospace;color:var(--muted);font-size:12px;margin-right:8px}
+.ev .side{font-weight:700;margin-right:8px}
+.ev.local .side{color:var(--blue)}
+.ev.remote .side{color:var(--amber)}
+.ev .tag{font-size:11px;background:#eef2ff;color:#4338ca;border-radius:5px;padding:1px 6px;margin-right:6px}
+.ev .msg{font-family:ui-monospace,Menlo,monospace;font-size:12px;color:#334155;word-break:break-all}
+.ev.out .msg::before{content:"\2197 ";color:var(--muted)}
+.ev.in .msg::before{content:"\2198 ";color:var(--muted)}
+.filters{margin-bottom:12px;display:flex;gap:8px;flex-wrap:wrap}
+.filters button{border:1px solid var(--line);background:#fff;border-radius:8px;padding:5px 12px;
+cursor:pointer;font-size:12.5px}
+.filters button.active{background:var(--blue);color:#fff;border-color:var(--blue)}
+.sagroup{border:1px dashed var(--line);border-radius:10px;padding:10px 14px;margin-bottom:14px;background:#fcfdff}
+.sagroup h4{margin:4px 0 8px;font-size:13.5px;color:#334155}
+.muted{color:var(--muted);font-size:12.5px}
+.pill{font-size:11px;padding:1px 8px;border-radius:999px;background:#e5e7eb;margin-right:6px}
+</style></head><body>
+<header><h1>IPSec / strongSwan 站点间隧道诊断报告</h1>
+<div class="meta">生成时间 2026-11-14 23:39:42 ｜ 日志补全年份 2026 ｜
+静态比对 + 双端 charon 日志时间对齐重建</div></header>
+<div class="wrap">
+<nav><a onclick="jump('overview')">总览</a><a onclick="jump('flow')">协商流程</a>
+<a onclick="jump('findings')">诊断结论与改法 (3)</a>
+<a onclick="jump('static')">静态配置比对</a>
+<a onclick="jump('timeline')">双端时间轴</a><a onclick="jump('inputs')">输入与解析</a></nav>
+
+<section class="card" id="overview"><h2>一、总览</h2><div class="kpis"><div class='kpi'><div class='v'>19</div><div class='l'>日志事件</div></div><div class='kpi'><div class='v'>1</div><div class='l'>IKE SA 组数</div></div><div class='kpi'><div class='v'>0</div><div class='l'>错误结论</div></div><div class='kpi'><div class='v'>3</div><div class='l'>风险提示</div></div><div class='kpi'><div class='v'>0</div><div class='l'>重传次数</div></div><div class='kpi'><div class='v'>4</div><div class='l'>rekey 次数</div></div><div class='kpi'><div class='v'>0</div><div class='l'>reauth 次数</div></div><div class='kpi'><div class='v'>0</div><div class='l'>DELETE 次数</div></div></div>
+<p style="margin-top:14px">曾成功建立 CHILD_SA：
+<b>是</b> ｜ 卡点：
+<b>无（流程走通，问题在保活/链路层）</b> ｜
+时间轴跨度：3062.0 秒</p></section>
+
+<section class="card" id="flow"><h2>二、协商流程还原（IKEv2 站点间标准 7 步）</h2>
+<div class="flow"><span class='fstep '><span class='n'>1</span>IKE_SA_INIT 发起</span><span class='arrow'>→</span><span class='fstep '><span class='n'>2</span>IKE_SA_INIT 应答/DH+Nonce</span><span class='arrow'>→</span><span class='fstep '><span class='n'>3</span>IKE_AUTH 发起（认证+TS）</span><span class='arrow'>→</span><span class='fstep '><span class='n'>4</span>IKE_AUTH 认证校验</span><span class='arrow'>→</span><span class='fstep done'><span class='n'>5</span>CREATE_CHILD_SA 建隧道</span><span class='arrow'>→</span><span class='fstep done'><span class='n'>6</span>CHILD_SA 上线</span><span class='arrow'>→</span><span class='fstep done'><span class='n'>7</span>保活/DPD 与生命周期</span></div>
+<p class="muted">绿色=日志中出现过该步骤；红色框=流程停滞步骤。</p></section>
+
+<section class="card" id="findings"><h2>三、诊断结论与修改建议</h2><div class='finding warn'><h3><span class='badge b-warn'>风险</span> ESP 生存期两端差异过大，周期性断流的典型诱因<span class='src'>来源：静态配置</span></h3><div>ESP 生存期相差 4.0 倍：生存期由较短一端决定，长端会被对端 DELETE 后被动重建，表现为&#x27;隔三差五断&#x27;</div><ul><li class='mono'>本端 lifetime=3600</li><li class='mono'>对端 lifetime=900</li></ul><div class='muted' style='margin-top:8px'>改法：</div><div class="fix">两端 lifetime 统一为 3600s，并配置 margintime（常见 5~10 分钟）让 rekey 平滑提前</div><div class="fix">swanctl children 段: lifetime=1h, margin_time=10m；ipsec.conf: lifetime=1h, margintime=10m</div></div><div class='finding warn'><h3><span class='badge b-warn'>风险</span> reauth/rekey 策略两端不一致<span class='src'>来源：静态配置</span></h3><div>IKEv2 站点间推荐两端都 reauth=no、靠 CREATE_CHILD_SA rekey，避免整通道重建造成瞬断</div><div class='muted' style='margin-top:8px'>改法：</div><div class="fix">swanctl: reauth = no（两端都配）；ipsec.conf: reauth=no</div></div><div class='finding warn'><h3><span class='badge b-warn'>风险</span> 检测到 rekey/reauth 碰撞（两端同时发起重协商）<span class='src'>来源：本端日志、对端日志</span></h3><div>两端在同一窗口各自发起 CREATE_CHILD_SA，strongSwan 按 RFC 7296 处理碰撞（通常保留一个、删另一个），碰撞瞬间可能出现瞬断或告警。样例：received CREATE_CHILD_SA request 30 [ N(REKEY_SA) SA No KE TSi TSr ] simultaneously</div><div class='muted' style='margin-top:8px'>改法：</div><div class="fix">让生存期不同端错峰：主动端 lifetime 略短（如 3600s），对端 3600s 且 margin_time 错开</div><div class="fix">两端都设 reauth=no，只做 CHILD_SA rekey（CREATE_CHILD_SA），避免整 IKE_SA 重建撞车</div><div class="fix">确认两端 strongSwan 版本不过旧（5.5 之前碰撞处理缺陷较多）</div></div></section>
+
+<section class="card" id="static"><h2>四、静态配置比对（swanctl.conf / ipsec.conf 双格式）</h2>
+<p class='muted'>配对连接：hq-branch ↔ hq-branch</p><table><thead><tr><th>比对项</th><th>本端</th><th>对端</th><th>结论</th><th>说明</th></tr></thead><tbody><tr><td>IKE 版本</td><td class='mono'>ikev2</td><td class='mono'>ikev2</td><td><span class="badge b-ok">匹配</span></td><td class='muted'></td></tr><tr><td>IKE 提议</td><td class='mono'>aes_cbc_256/prf_sha256/-/dh19</td><td class='mono'>aes_cbc_256/prf_sha256/-/dh19</td><td><span class="badge b-ok">匹配</span></td><td class='muted'></td></tr><tr><td>ESP 提议</td><td class='mono'>aes_cbc_256/-</td><td class='mono'>aes_cbc_256/-</td><td><span class="badge b-ok">匹配</span></td><td class='muted'></td></tr><tr><td>认证方式</td><td class='mono'>psk</td><td class='mono'>psk</td><td><span class="badge b-ok">匹配</span></td><td class='muted'></td></tr><tr><td>对端 ID 期望</td><td class='mono'>fqdn:branch-01.example.com</td><td class='mono'>fqdn:branch-01.example.com</td><td><span class="badge b-ok">匹配</span></td><td class='muted'></td></tr><tr><td>流量选择器(子网)</td><td class='mono'>[&#x27;10.10.0.0/16&#x27;] ↔ [&#x27;192.168.50.0/24&#x27;]</td><td class='mono'>[&#x27;192.168.50.0/24&#x27;] ↔ [&#x27;10.10.0.0/16&#x27;]</td><td><span class="badge b-ok">匹配</span></td><td class='muted'></td></tr><tr><td>IKE 生存期</td><td class='mono'>10800s(默认)</td><td class='mono'>10800s(默认)</td><td><span class="badge b-ok">匹配</span></td><td class='muted'></td></tr><tr><td>ESP 生存期</td><td class='mono'>3600s</td><td class='mono'>900s</td><td><span class="badge b-warn">风险</span></td><td class='muted'>ESP 生存期相差 4.0 倍：生存期由较短一端决定，长端会被对端 DELETE 后被动重建，表现为&#x27;隔三差五断&#x27;</td></tr><tr><td>DPD(delay/timeout)</td><td class='mono'>30s/150s</td><td class='mono'>30s/150s</td><td><span class="badge b-ok">匹配</span></td><td class='muted'></td></tr><tr><td>reauth 策略</td><td class='mono'>False</td><td class='mono'>True</td><td><span class="badge b-warn">风险</span></td><td class='muted'>一端 reauth=yes 一端 no：到期时一端整 SA 重建、一端只 rekey，容易撞车</td></tr></tbody></table></section>
+
+<section class="card" id="timeline"><h2>五、双端 charon 日志对齐时间轴</h2>
+<p class='muted'>时钟偏移估计：+1.100 秒（基于 7 组收发配对，对端时间已修正显示）</p><div class='filters'><button class='active' onclick="setFilter('all',this)">全部</button><button onclick="setFilter('local',this)">仅本端</button><button onclick="setFilter('remote',this)">仅对端</button></div><div class='sagroup'><h4>IKE_SA hq-branch[41] <span class='pill'>rekey</span><span class='pill'>无交换记录</span><span class='muted'>19 条事件</span></h4><div class='tl'><div class='ev local ' data-side='local'><span class='t'>17:00:00.000</span><span class='side'>本端</span><span class='tag'>ike_up</span><span class='pill'>hq-branch[41]</span><span class='msg'>IKE_SA hq-branch[41] established between 203.0.113.10...198.51.100.23</span></div><div class='ev remote ' data-side='remote'><span class='t'>17:00:00.100</span><span class='side'>对端</span><span class='tag'>ike_up</span><span class='pill'>hq-branch[41]</span><span class='msg'>IKE_SA hq-branch[41] established between 198.51.100.23...203.0.113.10</span></div><div class='ev local ' data-side='local'><span class='t'>17:00:00.120</span><span class='side'>本端</span><span class='tag'>ike</span><span class='msg'>CHILD_SA net[42] established with SPIs aa112233_i bb445566_o TS 10.10.0.0/16 === 192.168.50.0/24</span></div><div class='ev remote ' data-side='remote'><span class='t'>17:00:00.230</span><span class='side'>对端</span><span class='tag'>ike</span><span class='msg'>CHILD_SA net[42] established with SPIs bb445566_i aa112233_o</span></div><div class='ev local ' data-side='local'><span class='t'>17:51:00.000</span><span class='side'>本端</span><span class='tag'>rekey</span><span class='msg'>scheduling rekey of CHILD_SA net[42] (lifetime 1h, margin 9m)</span></div><div class='ev local out' data-side='local'><span class='t'>17:51:00.200</span><span class='side'>本端</span><span class='tag'>create_child_req</span>[CREATE_CHILD_SA] <span class='msg'>sending CREATE_CHILD_SA request 30 [ N(REKEY_SA) SA No KE TSi TSr ]</span></div><div class='ev remote ' data-side='remote'><span class='t'>17:51:00.400</span><span class='side'>对端</span><span class='tag'>rekey</span><span class='msg'>scheduling rekey of CHILD_SA net[42] (lifetime 15m, margin 2m)</span></div><div class='ev remote out' data-side='remote'><span class='t'>17:51:00.600</span><span class='side'>对端</span><span class='tag'>create_child_req</span>[CREATE_CHILD_SA] <span class='msg'>sending CREATE_CHILD_SA request 30 [ N(REKEY_SA) SA No KE TSi TSr ]</span></div><div class='ev local ' data-side='local'><span class='t'>17:51:00.800</span><span class='side'>本端</span><span class='tag'>collision</span>[CREATE_CHILD_SA] <span class='msg'>received CREATE_CHILD_SA request 30 [ N(REKEY_SA) SA No KE TSi TSr ] simultaneously</span></div><div class='ev remote ' data-side='remote'><span class='t'>17:51:00.800</span><span class='side'>对端</span><span class='tag'>rekey</span>[CREATE_CHILD_SA] <span class='msg'>received CREATE_CHILD_SA request 30 while own rekey in progress</span></div><div class='ev local ' data-side='local'><span class='t'>17:51:00.850</span><span class='side'>本端</span><span class='tag'>collision</span><span class='msg'>detected CHILD_SA rekey collision, handling per RFC 7296</span></div><div class='ev remote ' data-side='remote'><span class='t'>17:51:00.860</span><span class='side'>对端</span><span class='tag'>collision</span>[CREATE_CHILD_SA] <span class='msg'>CHILD_SA rekey collision detected, both sides initiated CREATE_CHILD_SA</span></div><div class='ev local ' data-side='local'><span class='t'>17:51:01.400</span><span class='side'>本端</span><span class='tag'>create_child_resp</span>[CREATE_CHILD_SA] <span class='msg'>received CREATE_CHILD_SA response 30 [ SA No KE TSi TSr ]</span></div><div class='ev remote out' data-side='remote'><span class='t'>17:51:01.400</span><span class='side'>对端</span><span class='tag'>create_child_resp</span>[CREATE_CHILD_SA] <span class='msg'>sending CREATE_CHILD_SA response 30 [ SA No KE TSi TSr ]</span></div><div class='ev local ' data-side='local'><span class='t'>17:51:01.500</span><span class='side'>本端</span><span class='tag'>ike</span><span class='msg'>inbound CHILD_SA net[43] established with SPI cc778899_i</span></div><div class='ev local ' data-side='local'><span class='t'>17:51:01.600</span><span class='side'>本端</span><span class='tag'>informational</span>[INFORMATIONAL] <span class='msg'>closing duplicate CHILD_SA net[42], sending INFORMATIONAL [ D ]</span></div><div class='ev local ' data-side='local'><span class='t'>17:51:01.900</span><span class='side'>本端</span><span class='tag'>rekey</span><span class='msg'>CHILD_SA net[43] rekeyed successfully, old SA deleted</span></div><div class='ev remote ' data-side='remote'><span class='t'>17:51:01.900</span><span class='side'>对端</span><span class='tag'>informational</span>[INFORMATIONAL] <span class='msg'>received INFORMATIONAL request 31 [ D ] deleting superseded CHILD_SA net[42]</span></div><div class='ev remote ' data-side='remote'><span class='t'>17:51:01.950</span><span class='side'>对端</span><span class='tag'>collision</span><span class='msg'>rekey collision resolved, keeping CHILD_SA net[43]</span></div></div></div></section>
+
+<section class="card" id="inputs"><h2>六、输入文件与解析状态</h2>
+<table><tbody><tr><td>本端配置</td><td class='mono'>./samples/s7-rekey-collision/local/swanctl.conf</td></tr><tr><td>对端配置</td><td class='mono'>./samples/s7-rekey-collision/remote/ipsec.conf</td></tr><tr><td>本端日志</td><td class='mono'>./samples/s7-rekey-collision/local/charon.log</td></tr><tr><td>对端日志</td><td class='mono'>./samples/s7-rekey-collision/remote/charon.log</td></tr></tbody></table><div style="margin-top:10px"><p class='muted'>无解析错误。</p></div></section>
+</div><script>
+function setFilter(side, btn){
+  document.querySelectorAll('.filters button').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.ev').forEach(ev=>{
+    ev.style.display = (side==='all'||ev.classList.contains(side)) ? '' : 'none';
+  });
+}
+function jump(id){document.getElementById(id).scrollIntoView({behavior:'smooth'});}
+</script></body></html>

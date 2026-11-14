@@ -1,0 +1,9 @@
+2026-11-08 17:00:01.200 5[IKE] IKE_SA hq-branch[41] established between 198.51.100.23...203.0.113.10
+2026-11-08 17:00:01.330 5[IKE] CHILD_SA net[42] established with SPIs bb445566_i aa112233_o
+2026-11-08 17:51:01.500 5[IKE] scheduling rekey of CHILD_SA net[42] (lifetime 15m, margin 2m)
+2026-11-08 17:51:01.700 5[IKE] sending CREATE_CHILD_SA request 30 [ N(REKEY_SA) SA No KE TSi TSr ]
+2026-11-08 17:51:01.900 5[IKE] received CREATE_CHILD_SA request 30 while own rekey in progress
+2026-11-08 17:51:01.960 5[IKE] CHILD_SA rekey collision detected, both sides initiated CREATE_CHILD_SA
+2026-11-08 17:51:02.500 5[IKE] sending CREATE_CHILD_SA response 30 [ SA No KE TSi TSr ]
+2026-11-08 17:51:03.000 5[IKE] received INFORMATIONAL request 31 [ D ] deleting superseded CHILD_SA net[42]
+2026-11-08 17:51:03.050 5[IKE] rekey collision resolved, keeping CHILD_SA net[43]

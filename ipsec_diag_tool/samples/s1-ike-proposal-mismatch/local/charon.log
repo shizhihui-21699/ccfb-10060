@@ -1,0 +1,8 @@
+2026-11-08 10:23:14.000 12[IKE] initiating IKE_SA hq-branch[4] to 198.51.100.23
+2026-11-08 10:23:14.120 12[IKE] sending IKE_SA_INIT request 0 [ SA KE No N(NATD_S_IP) N(NATD_D_IP) V V ]
+2026-11-08 10:23:14.940 12[IKE] received IKE_SA_INIT response 0 [ N(NO_PROPOSAL_CHOSEN) ] from 198.51.100.23
+2026-11-08 10:23:14.955 12[IKE] received NO_PROPOSAL_CHOSEN notify, no IKE_SA established
+2026-11-08 10:23:18.120 11[IKE] initiating IKE_SA hq-branch[5] to 198.51.100.23
+2026-11-08 10:23:18.240 11[IKE] sending IKE_SA_INIT request 0 [ SA KE No N(NATD_S_IP) N(NATD_D_IP) V V ]
+2026-11-08 10:23:19.060 11[IKE] received IKE_SA_INIT response 0 [ N(NO_PROPOSAL_CHOSEN) ] from 198.51.100.23
+2026-11-08 10:23:19.080 11[IKE] giving up after 2 retries due to notify NO_PROPOSAL_CHOSEN

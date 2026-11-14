@@ -1,0 +1,7 @@
+2026-11-08 09:55:11.060 4[IKE] received IKE_SA_INIT request 0 from 203.0.113.10
+2026-11-08 09:55:11.880 4[IKE] sending IKE_SA_INIT response 0 [ SA KE No V V ]
+2026-11-08 09:55:12.020 4[IKE] received IKE_AUTH request 1 [ IDi AUTH SA TSi TSr ]
+2026-11-08 09:55:12.100 4[IKE] authentication of 'fqdn:hq-vpn.example.com' with pre-shared key successful
+2026-11-08 09:55:12.140 4[IKE] sending IKE_AUTH response 1 [ IDr(fqdn:branch-01.example.com) AUTH ]
+2026-11-08 09:55:13.000 4[IKE] received INFORMATIONAL request 2 [ N(AUTHENTICATION_FAILED) ]
+2026-11-08 09:55:13.020 4[IKE] peer rejected our ID, IKE_SA hq-branch[21] destroyed

@@ -1,0 +1,10 @@
+2026-11-08 17:00:00.000 15[IKE] IKE_SA hq-branch[41] established between 203.0.113.10...198.51.100.23
+2026-11-08 17:00:00.120 15[IKE] CHILD_SA net[42] established with SPIs aa112233_i bb445566_o TS 10.10.0.0/16 === 192.168.50.0/24
+2026-11-08 17:51:00.000 15[IKE] scheduling rekey of CHILD_SA net[42] (lifetime 1h, margin 9m)
+2026-11-08 17:51:00.200 15[IKE] sending CREATE_CHILD_SA request 30 [ N(REKEY_SA) SA No KE TSi TSr ]
+2026-11-08 17:51:00.800 15[IKE] received CREATE_CHILD_SA request 30 [ N(REKEY_SA) SA No KE TSi TSr ] simultaneously
+2026-11-08 17:51:00.850 15[IKE] detected CHILD_SA rekey collision, handling per RFC 7296
+2026-11-08 17:51:01.400 15[IKE] received CREATE_CHILD_SA response 30 [ SA No KE TSi TSr ]
+2026-11-08 17:51:01.500 15[IKE] inbound CHILD_SA net[43] established with SPI cc778899_i
+2026-11-08 17:51:01.600 15[IKE] closing duplicate CHILD_SA net[42], sending INFORMATIONAL [ D ]
+2026-11-08 17:51:01.900 15[IKE] CHILD_SA net[43] rekeyed successfully, old SA deleted

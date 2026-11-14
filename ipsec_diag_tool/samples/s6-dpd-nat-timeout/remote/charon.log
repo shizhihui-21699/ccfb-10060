@@ -1,0 +1,6 @@
+Nov  8 16:30:00 hq-gw charon[1024]: 7[IKE] IKE_SA hq-branch[31] established between 198.51.100.23...203.0.113.10
+Nov  8 16:59:45 hq-gw charon[1024]: 7[KNL] remote side idle, NAT gateway mapping likely expired
+Nov  8 17:00:00 hq-gw charon[1024]: 7[NET] packet from 203.0.113.10 dropped by upstream NAT (no mapping)
+Nov  8 17:01:40 hq-gw charon[1024]: 7[IKE] dpddelay 120s not yet elapsed locally; no liveness probe sent
+Nov  8 17:02:00 hq-gw charon[1024]: 7[IKE] received INFORMATIONAL request? nothing received on UDP 4500 for 20 minutes
+Nov  8 17:02:10 hq-gw charon[1024]: 7[IKE] received DELETE for IKE_SA hq-branch[31], tearing down CHILD_SA net[32]

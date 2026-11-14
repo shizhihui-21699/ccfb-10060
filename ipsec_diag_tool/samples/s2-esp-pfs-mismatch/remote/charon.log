@@ -1,0 +1,8 @@
+2026-11-08 11:02:30.060 5[IKE] received IKE_SA_INIT request 0 [ SA KE No V V ] from 203.0.113.10
+2026-11-08 11:02:30.820 5[IKE] sending IKE_SA_INIT response 0 [ SA KE No N(NATD_S_IP) N(NATD_D_IP) V V ]
+2026-11-08 11:02:30.980 5[IKE] received IKE_AUTH request 1 [ IDi AUTH SA TSi TSr ] from 203.0.113.10
+2026-11-08 11:02:31.650 5[IKE] authentication of 'fqdn:hq-vpn.example.com' with pre-shared key successful
+2026-11-08 11:02:31.690 5[IKE] sending IKE_AUTH response 1 [ IDr AUTH N(AUTH_LFT) ]
+2026-11-08 11:02:31.860 5[IKE] received CREATE_CHILD_SA request 2 [ N(REKEY_SA) SA No KE TSi TSr ]
+2026-11-08 11:02:31.900 5[CFG] received ESP proposal AES_CBC_256/HMAC_SHA2_256_128/MODP_2048, local proposal has no PFS KE
+2026-11-08 11:02:32.550 5[IKE] no acceptable ESP proposal found, sending CREATE_CHILD_SA response 2 [ N(NO_PROPOSAL_CHOSEN) ]

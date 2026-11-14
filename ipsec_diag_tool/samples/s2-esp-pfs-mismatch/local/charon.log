@@ -1,0 +1,12 @@
+2026-11-08 11:02:30.000 14[IKE] initiating IKE_SA hq-branch[8] to 198.51.100.23
+2026-11-08 11:02:30.150 14[IKE] sending IKE_SA_INIT request 0 [ SA KE No N(NATD_S_IP) N(NATD_D_IP) V V ]
+2026-11-08 11:02:30.880 14[IKE] received IKE_SA_INIT response 0 [ SA KE No N(NATD_S_IP) N(NATD_D_IP) V V ]
+2026-11-08 11:02:30.900 14[IKE] selected proposal: IKE:AES_GCM? no -> AES_CBC_256/HMAC_SHA2_256_128/PRF_HMAC_SHA2_256/ECP_256
+2026-11-08 11:02:30.960 14[IKE] sending IKE_AUTH request 1 [ IDi AUTH SA TSi TSr N(ESP_TFC_PAD_N) N(NON_FIRST_FRAG) ]
+2026-11-08 11:02:31.720 14[IKE] received IKE_AUTH response 1 [ IDr AUTH CERTREQ N(AUTH_LFT) ]
+2026-11-08 11:02:31.740 14[IKE] authentication of 'fqdn:branch-01.example.com' with pre-shared key successful
+2026-11-08 11:02:31.780 14[IKE] IKE_SA hq-branch[8] established between 203.0.113.10[hq-vpn.example.com]...198.51.100.23[branch-01.example.com]
+2026-11-08 11:02:31.820 14[IKE] sending CREATE_CHILD_SA request 2 [ N(REKEY_SA) SA No KE TSi TSr ]
+2026-11-08 11:02:32.600 14[IKE] received CREATE_CHILD_SA response 2 [ N(NO_PROPOSAL_CHOSEN) ]
+2026-11-08 11:02:32.620 14[IKE] failed to establish CHILD_SA, keeping IKE_SA
+2026-11-08 11:02:32.640 14[IKE] received NO_PROPOSAL_CHOSEN notify, ESP proposal or PFS group rejected
